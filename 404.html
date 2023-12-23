@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="assets/min.css/animate.min.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Not Found</title>
+    <style>
+        body {
+            font-family: Dosis, 'Arial', sans-serif;
+            text-align: center;
+            background-color: #20000b;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        h1 {
+            color: #9d0000;
+            font-size: 8em;
+            margin: 0;
+            animation: shake 0.5s ease-in-out infinite;
+        }
+
+        p {
+            color: #ff0022;
+            font-size: 1.5em;
+            animation: fadeIn 2s ease-out;
+        }
+
+        a {
+            color: #abcdef;
+            text-decoration: none;
+            animation: fadeIn 2s ease-out;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25%, 75% {
+                transform: translateX(-20px);
+            }
+            50% {
+                transform: translateX(20px);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        input {
+          text-align: center;
+        }
+        .button2 {
+          position: relative;
+          background-color: #ff0000;
+          border-radius: 4px;
+          border: 2px solid #ff0088;
+          color: #FFFFFF;
+          padding: 8px 12px;
+          text-align: center;
+          margin: 4px 2px;
+          opacity: 0.6;
+          -webkit-transition-duration: 0.4s; /* Safari */
+          transition-duration: 0.4s;
+          display: inline-block;
+          text-decoration: none;
+          overflow: hidden;
+          cursor: pointer;
+          box-shadow: 0 9px #9999;
+          transform: translateY(0px);
+        }
+        .button2:hover {
+          text-decoration: underline;
+          opacity: 0.8;
+          box-shadow: 0 5px #bbbb;
+          transform: translateY(4px);
+          text-decoration-color: black;
+        }
+        .button2:active {
+          text-decoration: underline;
+          opacity: 1;
+          box-shadow: 0 3px #dddd;
+          transform: translateY(6px);
+        }
+    </style>
+</head>
+<script>
+    document.body.style.overflow = 'hidden';
+    var audio1 = document.getElementById("Audio1");
+    audio1.play();
+    var audio2 = document.getElementById("Audio2");
+    audio2.play();
+</script>
+<body>
+    <audio hidden autoplay loop id="Audio1">
+        <source src="/assets/audio/Horror Ambience.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+    <audio hidden autoplay loop id="Audio2">
+        <source src="/assets/audio/sound-effects-library-spooky-ambience.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+    <div class="container">
+        <h1>404</h1>
+        <p>Not Found</p>
+        <p>Sorry, the page you are looking for might be in another castle.</p>
+        <p><a href="/" class="button2 animate__animated animate__pulse animate__infinite animate__tada">Go back home</a></p>
+    </div>
+  <canvas id="binaryCanvas"></canvas>
+    
+  <script>
+    function decimalToHex(decimal) {
+      return decimal.toString(16).toUpperCase();
+    }
+      // Set the initial time
+    let time = 0;
+    // Function to update the timer
+    function updateTimer() {
+      time += 0.01;
+    }
+    // Update the timer every second (10 milliseconds)
+    const timerInterval = setInterval(updateTimer, 10);
+      
+    const canvas = document.getElementById('binaryCanvas');
+    const ctx = canvas.getContext('2d');
+    const ctx2 = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const binaryArray = [];
+    const binaryArray2 = [];
+
+    function initBinaryArray() {
+      for (let i = 0; i < 100; i++) {
+        binaryArray.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          speed: Math.random() * 4 + 1, // Random speed between 1 and 5
+        });
+      }
+    }
+    function initBinaryArray2() {
+      for (let i = 0; i < 100; i++) {
+        binaryArray2.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          speed: Math.random() * 4 + 1, // Random speed between 1 and 5
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx2.clearRect(0, 0, canvas.width, canvas.height);
+      
+
+      ctx.fillStyle = `rgb(${Math.abs(Math.round(Math.sin(time*Math.PI/15)*128))}, 0, ${Math.abs(Math.round(Math.cos(time*Math.PI/25)*128))})`; // Green color for ones
+      ctx.font = '32px Dosis';
+      ctx2.fillStyle = `rgb(${Math.abs(Math.round(Math.cos(time*Math.PI/20)*128))}, 0, ${Math.abs(Math.round(Math.sin(time*Math.PI/35)*128))})`; // Green color for ones
+      ctx2.font = '32px Dosis';
+
+      binaryArray.forEach(binary => {
+        binary.y += binary.speed;
+
+        // Reset position if it goes out of the screen
+        if (binary.y > canvas.height) {
+          binary.y = 0;
+          binary.x = Math.random() * canvas.width;
+        }
+
+        ctx.fillText('1', binary.x, binary.y);
+      });
+      binaryArray2.forEach(binary2 => {
+        binary2.y += binary2.speed;
+
+        // Reset position if it goes out of the screen
+        if (binary2.y > canvas.height) {
+          binary2.y = 0;
+          binary2.x = Math.random() * canvas.width;
+        }
+
+        ctx2.fillText('0', binary2.x, binary2.y);
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    initBinaryArray();
+    initBinaryArray2();
+    draw();
+  </script>
+</body>
+</html>
