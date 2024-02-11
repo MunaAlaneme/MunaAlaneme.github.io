@@ -158,6 +158,9 @@
     </footer>
 
     <script>
+        function decimalToHex(decimal) {
+            return decimal.toString(16).toUpperCase();
+        }
         // Add JavaScript to handle scroll event and add a class to the header
         window.onscroll = function() {
             var header = document.querySelector('header');
@@ -202,6 +205,12 @@
       const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
       const cube = new THREE.Mesh(geometry, material);
       scene.add(cube);
+
+      // Create an outline
+      const outlineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+      const outlineGeometry = new THREE.EdgesGeometry(geometry);
+      const outline = new THREE.LineSegments(outlineGeometry, outlineMaterial);
+      cube.add(outline);
     
       // Position the camera
       camera.position.z = 5;
