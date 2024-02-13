@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Emulation</title>
+    <!-- <script src="./assets/js/brython.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.10.0/brython.js"></script>
+</head>
+<body>
+    <!-- Your HTML content goes here -->
+
+    <!-- Script to emulate Python code -->
+    <script type="text/python">
+        # Your Python code goes here
+        print("Hello from Python!")
+        x = 10
+        y = 20
+        result = x + y
+        print("Result:", result)
+    </script>
+
+    <!-- Script to initialize Brython -->
+    <script>
+        window.onload = function () {
+            brython();
+        };
+    </script>
+</body>
+</html>
