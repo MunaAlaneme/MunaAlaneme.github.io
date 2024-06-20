@@ -232,8 +232,8 @@
     
       // Handle window resize
       window.addEventListener('resize', () => {
-        const newWidth = window.innerWidth;
-        const newHeight = window.innerHeight;
+        const newWidth = window.innerWidth/2;
+        const newHeight = window.innerHeight/2;
     
         camera.aspect = newWidth / newHeight;
         camera.updateProjectionMatrix();
