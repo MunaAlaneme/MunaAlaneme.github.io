@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Create.JS New Project</title>
+	<!-- EaselJS 0.7.1, TweenJS 0.5.1, SoundJS 0.5.2, PreloadJS 0.4.1 -->
+	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+	<script src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
+	<!-- script src="Create.JSNewProject.js"></script -->
+	<!-- script src="assets/js/Main.js"></script -->
+	<script>
+		// SOUND
+		var soundJS = createjs.Sound;
+		createjs.Sound.alternateExtensions = ["mp3", "wav", "ogg"];
+		
+		var queue = new createjs.LoadQueue();
+		queue.installPlugin(createjs.Sound);
+
+		function playSound (soundID, looping) {
+			if (looping == true) {
+				createjs.Sound.play(soundID, {
+					interrupt: createjs.Sound.INTERRUPT_ANY,
+					loop: -1
+				});
+			} else {
+				createjs.Sound.play(soundID);
+			}
+		}
+		function fadeOutSound(soundInstance, duration) {
+			var fadeInterval = createjs.Ticker.getTime();
+			createjs.Tween.get(soundInstance)
+				.to({ volume: 0 }, duration)
+				.call(function() {
+					soundInstance.stop();
+				});
+		}
+
+		function fadeInSound(soundInstance, duration) {
+			soundInstance.volume = 0;
+			soundInstance.play({ loop: -1 });
+			createjs.Tween.get(soundInstance)
+				.to({ volume: 1 }, duration);
+		}
+		function playLoopingSound(soundID) {
+			createjs.Sound.on("fileload", handleLoad);
+
+			function handleLoad(event) {
+				var soundInstance = createjs.Sound.play(soundID, {
+					interrupt: createjs.Sound.INTERRUPT_ANY,
+					loop: -1
+				});
+				soundInstance.on("complete", handleLoop); // Add listener for loop completion
+			}
+			function handleLoop() {
+				// Optional: Perform actions before restarting the sound (e.g., brief pause)
+				// soundInstance.stop(); // Uncomment this line if you want a brief pause before looping
+				soundInstance.play({ loop: -1 }); // Restart playback with looping enabled
+			}
+		}
+		
+		// EASELJS
+		function init() {
+			var stage = new createjs.Stage("mainCanvas");
+			var circle = new createjs.Shape();
+			circle.graphics.beginFill("Crimson").drawCircle(0, 0, 100);
+			circle.x = 100;
+			circle.y = 400;
+			stage.addChild(circle);
+			createjs.Tween.get(circle, {loop: true})
+				.to({x: 400}, 1000, createjs.Ease.getPowInOut(4))
+				.to({alpha: 0, y: 75}, 500, createjs.Ease.getPowInOut(2))
+				.to({alpha: 0, y: 425}, 100)
+				.to({alpha: 1, y: 400}, 500, createjs.Ease.getPowInOut(2))
+				.to({x: 100}, 800, createjs.Ease.getPowInOut(2));
+			
+			let lastTime = 0;
+			var spriteSheet = new createjs.SpriteSheet({
+				// Define frames here (refer to CreateJS SpriteSheet documentation for details)
+				images: ["assets/img/ColorPal.png"],
+				frames: {width: 48, height: 48},
+				// ... other optional properties
+			});
+			var mySprite = new createjs.Sprite(spriteSheet);
+			var mySprite2 = new createjs.Bitmap("assets/img/ColorPal.png");
+			stage.addChild(mySprite);
+			stage.addChild(mySprite2);
+			mySprite.x = 100; // Set horizontal position
+			mySprite.y = 50;  // Set vertical position
+			mySprite.scaleX = 4; // Scale the sprite by 2x
+			mySprite.scaleY = 4; // Scale the sprite by 0.5 vertically
+			mySprite2.x = 100; // Set horizontal position
+			mySprite2.y = 50;  // Set vertical position
+			mySprite2.scaleX = 4; // Scale the sprite by 2x
+			mySprite2.scaleY = 4; // Scale the sprite by 0.5 vertically
+			
+		//	createjs.Ticker.setFPS(60);
+			createjs.Ticker.addEventListener("tick", handleTick);
+			createjs.Ticker.timingMode = createjs.Ticker.RAF;
+			function handleTick(event) {
+				let currentTime = createjs.Ticker.getTime();
+				let deltaTime = (currentTime - lastTime) / 1000; // convert milliseconds to seconds
+
+				// Update your display objects here (e.g., move a sprite)
+				mySprite.x += 500 * deltaTime;
+				mySprite2.x += 100 * deltaTime;
+				
+				// No need to call stage.update() here, the stage will redraw automatically
+				lastTime = currentTime;
+				stage.update(); // Update the stage to reflect the added sprite
+			}
+		}
+		
+		// START!!
+		var soundID1 = "Music"
+		function start1() {
+			init();
+			createjs.Sound.registerSound({src:"assets/audio/wav/YoyleCakeMichaelHuang2012BFDI.wav", id:soundID1});
+			playLoopingSound(soundID1);
+			//playSound(soundID1, true);
+		}
+    </script>
+</head>
+<body onload="start1();">
+	<button onclick="playSound(soundID1, true);" class="playSound">Play Sound</button>
+<canvas id="mainCanvas" width="1280" height="720"></canvas>
+
+<script>
+// Main.main();
+</script>
+	
+</body>
+</html>
